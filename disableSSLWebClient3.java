@@ -21,8 +21,9 @@ public class MainClass {
         SSLContext sslContext = SSLContext.getInstance("TLS");
         sslContext.init(null, getTrustManagers(), new java.security.SecureRandom());
 
-        return HttpClient.create()
-                .secure(ssl -> ssl.sslContext(sslContextSpec -> sslContextSpec.configure(sslContext)));
+        HttpClient httpClient = HttpClient.create().secure(t -> t.sslContext(sslContext));
+
+        return httpClient;
     }
 
     private static TrustManager[] getTrustManagers() {
