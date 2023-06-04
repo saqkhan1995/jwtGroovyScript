@@ -5,7 +5,6 @@ import reactor.netty.http.client.HttpClient;
 import javax.net.ssl.*;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 
 public class MainClass {
@@ -20,10 +19,10 @@ public class MainClass {
 
     private static HttpClient createHttpClient() throws NoSuchAlgorithmException, KeyManagementException {
         SSLContext sslContext = SSLContext.getInstance("TLS");
-        sslContext.init(null, getTrustManagers(), new SecureRandom());
+        sslContext.init(null, getTrustManagers(), new java.security.SecureRandom());
 
         return HttpClient.create()
-                .secure(ssl -> ssl.sslContext(sslContext));
+                .secure(ssl -> ssl.sslContext(sslContextSpec -> sslContextSpec.configure(sslContext)));
     }
 
     private static TrustManager[] getTrustManagers() {
